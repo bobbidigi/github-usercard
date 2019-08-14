@@ -2,6 +2,20 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+// const axios = require('axios');
+let data;
+
+axios.get('https://api.github.com/users/bobbidigi')
+  .then(function (response) {
+    // handle success
+    data = response.data;
+    console.log(data);
+    cards.appendChild(createCard(data));
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -27,8 +41,7 @@
 const followersArray = [];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
-          Using DOM methods and properties, create a component that will return the following DOM element:
-
+          Using DOM methods and properties, create a component that will return the following DOM element:          
 <div class="card">
   <img src={image url of user} />
   <div class="card-info">
@@ -45,6 +58,24 @@ const followersArray = [];
 </div>
 
 */
+let cards = document.querySelector('.cards');
+
+function createCard(obj){
+  let card = document.createElement('div');
+  card.classList.add('card');
+  let profile = document.createElement('img');
+  profile.setAttribute("src", obj.avatar_url);
+  card.appendChild(profile);
+  let info = document.createElement('div');
+  info.classList.add('card-info');
+  card.appendChild(info);
+  let name = document.createElement('h3');
+  name.textContent = obj.name;
+  info.appendChild(name);
+  let userName = document.createElement('p');
+  return card;
+}
+
 
 /* List of LS Instructors Github username's: 
   tetondan
@@ -53,3 +84,5 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+
