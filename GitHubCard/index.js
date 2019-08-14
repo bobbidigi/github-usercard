@@ -5,17 +5,23 @@
 // const axios = require('axios');
 let data;
 
-axios.get('https://api.github.com/users/bobbidigi')
-  .then(function (response) {
-    // handle success
-    data = response.data;
-    console.log(data);
-    cards.appendChild(createCard(data));
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+followersArray.forEach(function(follower){
+
+  axios.get(`https://api.github.com/users/${follower}`)
+    .then(function (response) {
+      // handle success
+      data = response.data;
+      console.log(data);
+      cards.appendChild(createCard(data));
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+
+  })    
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -38,7 +44,7 @@ axios.get('https://api.github.com/users/bobbidigi')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:          
@@ -63,16 +69,39 @@ let cards = document.querySelector('.cards');
 function createCard(obj){
   let card = document.createElement('div');
   card.classList.add('card');
-  let profile = document.createElement('img');
-  profile.setAttribute("src", obj.avatar_url);
-  card.appendChild(profile);
+  let profileImg = document.createElement('img');
+  profileImg.setAttribute("src", obj.avatar_url);
+  card.appendChild(profileImg);
   let info = document.createElement('div');
   info.classList.add('card-info');
   card.appendChild(info);
   let name = document.createElement('h3');
+  name.classList.add('name');
   name.textContent = obj.name;
   info.appendChild(name);
   let userName = document.createElement('p');
+  userName.classList.add('username');
+  userName.textContent = obj.login;
+  info.appendChild(userName);
+  let location = document.createElement('p');
+  location.textContent = obj.location;
+  info.appendChild(location);
+  let profile = document.createElement('p');
+  profile.textContent = "Profile: "
+  let profileLink = document.createElement('a');
+  profileLink.textContent = " address to users github page";
+  profileLink.setAttribute("href", obj.html_url);
+  profile.appendChild(profileLink);
+  let followers = document.createElement('p');
+  followers.textContent = `Followers: ${obj.followers}`;
+  info.appendChild(followers); 
+  let following = document.createElement('p');
+  following.textContent = `Following: ${obj.following}`;
+  info.appendChild(following);
+  let bio = document.createElement('p')
+  bio.textContent = obj.bio;
+  info.appendChild(bio);
+  info.appendChild(profile);
   return card;
 }
 
