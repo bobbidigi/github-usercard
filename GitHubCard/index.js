@@ -5,23 +5,34 @@
 // const axios = require('axios');
 let data;
 
-const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
 
-followersArray.forEach(function(follower){
 
-  axios.get(`https://api.github.com/users/${follower}`)
+// followersArray.forEach(function(follower){
+
+  axios.get('https://api.github.com/users/bobbidigi')
     .then(function (response) {
       // handle success
       data = response.data;
       console.log(data);
+      console.log(data.followers_url);
       cards.appendChild(createCard(data));
+
+      axios.get(`${data.followers_url}`)
+        .then(function(response){
+          let followersArray = response.data;
+          console.log(followersArray);
+          followersArray.forEach(function(follower){
+            console.log(follower)
+            cards.appendChild(createCard(follower));
+          }) 
+        })
     })
     .catch(function (error) {
       // handle error
       console.log(error);
     })
 
-  })    
+     
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -104,6 +115,7 @@ function createCard(obj){
   info.appendChild(profile);
   return card;
 }
+
 
 
 /* List of LS Instructors Github username's: 
