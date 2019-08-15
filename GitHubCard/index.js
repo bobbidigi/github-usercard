@@ -3,28 +3,27 @@
            https://api.github.com/users/<your name>
 */
 // const axios = require('axios');
+let arr = [];
 let data;
-
-
-
-// followersArray.forEach(function(follower){
-
   axios.get('https://api.github.com/users/bobbidigi')
     .then(function (response) {
       // handle success
       data = response.data;
       console.log(data);
-      console.log(data.followers_url);
       cards.appendChild(createCard(data));
-
       axios.get(`${data.followers_url}`)
         .then(function(response){
           let followersArray = response.data;
-          console.log(followersArray);
           followersArray.forEach(function(follower){
-            console.log(follower)
-            cards.appendChild(createCard(follower));
-          }) 
+            arr.push(follower.login);
+          })
+          arr.forEach(function(item){
+            axios.get(`https://api.github.com/users/${item}`)
+              .then(function(response){
+                console.log(response.data);
+                cards.appendChild(createCard(response.data));
+              })
+          })
         })
     })
     .catch(function (error) {
