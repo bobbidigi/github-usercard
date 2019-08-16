@@ -127,9 +127,9 @@ function createCard(obj){
   // calendar
   let calendar = document.createElement('div')
   calendar.classList.add('calendar');
-  new GitHubCalendar(".calendar", `${obj.login}`);
+  new GitHubCalendar(calendar, `${obj.login}`);
 
-  info.appendChild(calendar);
+  card.appendChild(calendar);
 
   return card;
 }
