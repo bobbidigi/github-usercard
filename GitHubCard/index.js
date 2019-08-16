@@ -16,11 +16,12 @@ let data;
           let followersArray = response.data;
           followersArray.forEach(function(follower){
             arr.push(follower.login);
+            console.log(follower);
           })
           arr.forEach(function(item){
             axios.get(`https://api.github.com/users/${item}`)
               .then(function(response){
-                console.log(response.data);
+                // console.log(response.data);
                 cards.appendChild(createCard(response.data));
               })
           })
@@ -77,41 +78,59 @@ let data;
 let cards = document.querySelector('.cards');
 
 function createCard(obj){
+  // parent card container
   let card = document.createElement('div');
   card.classList.add('card');
+  // profile
   let profileImg = document.createElement('img');
   profileImg.setAttribute("src", obj.avatar_url);
   card.appendChild(profileImg);
+  // info
   let info = document.createElement('div');
   info.classList.add('card-info');
   card.appendChild(info);
+  // name
   let name = document.createElement('h3');
   name.classList.add('name');
   name.textContent = obj.name;
   info.appendChild(name);
+  // username
   let userName = document.createElement('p');
   userName.classList.add('username');
   userName.textContent = obj.login;
   info.appendChild(userName);
+  // location
   let location = document.createElement('p');
   location.textContent = obj.location;
   info.appendChild(location);
+  // profile
   let profile = document.createElement('p');
   profile.textContent = "Profile: "
   let profileLink = document.createElement('a');
   profileLink.textContent = " address to users github page";
   profileLink.setAttribute("href", obj.html_url);
   profile.appendChild(profileLink);
+  // followers
   let followers = document.createElement('p');
   followers.textContent = `Followers: ${obj.followers}`;
-  info.appendChild(followers); 
+  info.appendChild(followers);
+  // following
   let following = document.createElement('p');
   following.textContent = `Following: ${obj.following}`;
   info.appendChild(following);
+  // bio
   let bio = document.createElement('p')
   bio.textContent = obj.bio;
   info.appendChild(bio);
   info.appendChild(profile);
+
+  // calendar
+  let calendar = document.createElement('div')
+  calendar.classList.add('calendar');
+  new GitHubCalendar(".calendar", `${obj.login}`);
+
+  info.appendChild(calendar);
+
   return card;
 }
 
